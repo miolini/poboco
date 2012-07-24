@@ -8,16 +8,17 @@ var vkclient = require('../core/vkclient');
 var core_utils = require('../core/utils');
 var config = require('../core/config');
 
-var KEY = 'asdfasdfwer123719823!@#!@';
+var KEY = 'asdfasdfwer12371';
 var vkClient = new vkclient.VkontakteClient(config.vk_token);
 
 var clean = function(str)
 {
-    return str;
-    str = str.replace(/[^a-z^A-Z^0-9]/,'');
+    str = str.replace(/[^a-z^A-Z^0-9\(\)\s\,\.\:\-\'']/g,' ');
+	str = str.replace(/\s{2,}/, ' ');
+	str = str.replace(/^\s+/,'');
+	str = str.replace(/\s+$/,'');
     return str;
 }
-
 exports.audioSearch = function(req, res) {
 	var query = req.param('q');
 	if (query == undefined || query.trim() == '') 
@@ -25,14 +26,15 @@ exports.audioSearch = function(req, res) {
 		res.end('need q param');
 		return;
 	}
-	res.setHeader('Content-Type', 'text/javascript');
 	console.log('search audio for query: '+query);
+	res.setHeader('Content-Type', 'text/javascript');
 	vkClient.audioSearch(query, function (result) {
 		if (result.error) {
 			res.end('error');
 			return;
 		}
-		var result2 = [];
+		var items = [];
+		var cache = {};
 		for(i in result)
 		{
 			var item = result[i];
@@ -41,17 +43,21 @@ exports.audioSearch = function(req, res) {
 			id = core_utils.crypto_encode(KEY, id);
 			if (item.title != undefined)
 			{
-				if (item.title.length > 30) continue;
+				if (item.title.length > 50) continue;
 				item.title = clean(item.title);
 			} 
-			else if (item.artist != undefined)
+			if (item.artist != undefined)
 			{
-				if (item.artist.length > 30) continue;
+				if (item.artist.length > 50) continue;
 				item.artist = clean(item.artist);
 			} 
-			result2.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': id, parent: JSON.stringify(item)});
+			var key = item.artist+item.title;
+			key = key.toLowerCase();
+			if (cache[key]) continue;
+			items.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': id});
+			cache[key] = true;
 		}
-		res.end(JSON.stringify(result2));
+		res.end(JSON.stringify({query:query, items:items}));
 	});
 };
 
@@ -75,9 +81,10 @@ exports.audioGet = function(req, res)
 		{
 			res.setHeader('Content-Type','audio/mpeg');
 			console.log('connected');
-			var fileStream = fs.createWriteStream(fileName);
+			
 			clientRes.pipe(res);
-			clientRes.pipe(fileStream);
+			//var fileStream = fs.createWriteStream(fileName);
+			//clientRes.pipe(fileStream);
 		});
 	});
 	stream.on('open', function()
@@ -86,3 +93,8 @@ exports.audioGet = function(req, res)
 	});
 	stream.pipe(res);
 };
+
+exports.ping = function(req, res)
+{
+	res.end(JSON.stringify({response:'pong',data: req.param('data')}));
+}

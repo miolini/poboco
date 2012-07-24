@@ -1,16 +1,16 @@
-var Client = function(url)
+var Client = function()
 {
 	var self = {};
-	self.url = url;
 	self.request = function(method, params, callback)
 	{
-		$.get(self.url+method, params, function (response) 
+		$.get('/api/'+method, params, function (response) 
 		{
 			if (callback == undefined) return;
 			try
 			{
 				var result = JSON.parse(response);
-			} catch (e) 
+			} 
+			catch (e) 
 			{
 				console.log(e);
 			}
@@ -23,6 +23,7 @@ var Client = function(url)
 var Player = function() {
 	var self = {};
 	self.audio = new Audio();
+	self.audio.preload = true;
 	
 	self.play = function(url, callback, data) {
 		try 
@@ -40,10 +41,15 @@ var Player = function() {
 			}
 			else
 			{
-				if (url != self.url) self.audio.setAttribute('src', url);
+				if (url != self.url) 
+				{
+					self.audio.src = url;
+					self.audio.load();
+				}
 				self.url = url;
 				self.stage = 'play';
 				console.log('play '+url);
+				
 				self.audio.play();
 				self.callback = callback;
 				self.callbackData = data;
@@ -59,35 +65,44 @@ var Player = function() {
 	return self;
 }
 
-var client = new Client('/api/');
+var client = new Client();
 var lastQuery = false;
 var player = new Player();
 
 var search = function(query)
 {
-	//$('#search_box').val(query);
-	query = query.replace(/[\s]+/, ' ');
+	query = query.replace(/[\s]+/, ' ').trim().replace(/[^a-z^A-Z^а-я^А-Я^0-9\s]/,'');
+	console.log('query: '+query);
+	if (query == '')
+	{
+		if (lastQuery) $('#search_box').removeClass('loading');
+		return;
+	}
 	if (query == lastQuery) return;
 	lastQuery = query;
 	console.log('searching: '+query);
-	$('#search_results').text('Loading...');
+	console.log('basta');
+	$('#search_box').addClass('loading');
 	client.request('audio.search', {q: query}, function(result)
 	{
-		$('#search_results').html('');
+		console.log('basta');
 		if (result == undefined) return;
 		if (result.error)
 		{
 			console.log('error: '+result.error);
 			return;
 		}
-		if (result.length == 0)
+		//if (result.query != lastQuery) return;
+		$('#search_results').html('');
+		if (result.items.length == 0)
 		{
 			$('#search_results').text('Nothing found.');
 			return;
 		}
-		for(i in result)
+		$('#search_box').removeClass('loading');
+		for(i in result.items)
 		{
-			var item = result[i];
+			var item = result.items[i];
 			if (item.title == undefined) continue;
 			$('#search_results').append('<span class="item nonselect">');
 			$('#search_results').append('<span class="play" id="bt_'+item.id+'" aid="'+item.id+'"/>'+item.artist+' - '+item.title+'</span>');
@@ -108,8 +123,14 @@ var search = function(query)
 
 $(function()
 {
-	$('#search_box').focus();
-	//search('sting');
+	setInterval(function()
+	{
+		$.get('/api/ping', function(response)
+		{
+			alert(response);
+		});
+	}, 2000);
+	//$('#search_box').focus();
 	$('#search_box').keyup(function(e)
 	{
 		var query = $(this).val();
