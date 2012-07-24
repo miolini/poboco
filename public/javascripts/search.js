@@ -65,7 +65,7 @@ var player = new Player();
 
 var search = function(query)
 {
-	$('#search_box').val(query);
+	//$('#search_box').val(query);
 	query = query.replace(/[\s]+/, ' ');
 	if (query == lastQuery) return;
 	lastQuery = query;
@@ -94,7 +94,7 @@ var search = function(query)
 			$('#bt_'+item.id).click(function()
 			{
 				var aid = $(this).attr('aid');
-				player.play('http://localhost:3000/api/audio.get?id='+aid, function(e)
+				player.play('/api/audio.get?id='+aid, function(e)
 				{
 					if (e.stage == 'play')
 						$('#bt_'+e.data.id).attr('class', 'pause');
@@ -108,7 +108,7 @@ var search = function(query)
 
 $(function()
 {
-	search('sting');
+	//search('sting');
 	$('#search_box').keyup(function(e)
 	{
 		var query = $(this).val();
