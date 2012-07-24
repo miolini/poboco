@@ -46,8 +46,7 @@ a {
 
 #search_results .item
 {
-	padding: 10px 0px;
-	sele
+	margin: 1em 0px;
 }
 
 .play
@@ -79,4 +78,11 @@ a {
 	cursor: pointer;
 	margin-bottom: -2px;
 	margin-right: 5px;
+}
+
+#footer {
+    font-size: 11px;
+    text-align: center;
+    color: #aaa;
+    margin-top: 5em;
 }

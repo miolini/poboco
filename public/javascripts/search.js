@@ -108,6 +108,7 @@ var search = function(query)
 
 $(function()
 {
+	$('#search_box').focus();
 	//search('sting');
 	$('#search_box').keyup(function(e)
 	{
