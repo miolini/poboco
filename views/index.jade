@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	div(class='block')
+		span Music Search:
+		br
+		br
+		script(src="/javascripts/search.js")
+		form(onsubmit="return false")
+			input(name='query',type='text',id="search_box",autocomplete="off")
+			div(id="search_results")
+	

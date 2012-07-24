@@ -1,0 +1,82 @@
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	width: 800px;
+	margin: 0em auto;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#content {
+	margin-top: 6em;
+}
+
+.logo
+{
+	top: 0em;
+	color: white;
+	background-color: #338;
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	height: 4em;
+}
+
+.logo h1 
+{
+	width: 800px;
+	margin: 0.4em auto;
+}
+
+#search_results span.item
+{
+	display: block;
+	font-size: 14px;
+}
+
+#search_box
+{
+	font-size: 20px;
+	width: 100%;
+	border: 1px solid #ddd;
+	padding: 0.3em 0.5em;
+	border-radius: 0.2em;
+}
+
+#search_results .item
+{
+	padding: 10px 0px;
+	sele
+}
+
+.play
+{
+	background-image: url('/images/playpause.gif');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	cursor: pointer;
+	margin-bottom: -2px;
+	margin-right: 5px;
+}
+
+.nonselect {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.pause
+{
+	background-image: url('/images/playpause.gif');
+	width: 16px;
+	height: 16px;
+	background-position: 0px 16px;
+	display: inline-block;
+	cursor: pointer;
+	margin-bottom: -2px;
+	margin-right: 5px;
+}
