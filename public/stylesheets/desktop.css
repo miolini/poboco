@@ -16,7 +16,7 @@ a {
 {
 	top: 0em;
 	color: white;
-	background-color: #338;
+	background-color: #5b92e3;
 	position: absolute;
 	width: 100%;
 	left: 0px;
@@ -26,7 +26,13 @@ a {
 .logo h1 
 {
 	width: 800px;
+	display: block;
 	margin: 0.4em auto;
+}
+
+#search_results
+{
+	padding: 1em 0 0 0;
 }
 
 #search_results span.item
@@ -44,9 +50,27 @@ a {
 	border-radius: 0.2em;
 }
 
+input:-moz-placeholder 
+{  
+	color: #aaa;  
+}
+
+.loading
+{
+	background-image: url('/images/loading.gif');
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
 #search_results .item
 {
 	margin: 1em 0px;
+}
+
+.logo h1 a
+{
+	text-decoration: none;
+	color: white;
 }
 
 .play
@@ -81,8 +105,8 @@ a {
 }
 
 #footer {
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
     color: #aaa;
-    margin-top: 5em;
+    margin: 5em 0;
 }
