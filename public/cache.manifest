@@ -1,0 +1,16 @@
+CACHE MANIFEST
+/stylesheets/mobile.css
+/stylesheets/desktop.css
+/images/loading.gif
+/images/playpause.gif
+/javascripts/jquery-1.7.2.min.js
+/javascripts/search.js
+/favicon.ico
+/apple-touch-icon-57x57-precomposed.png
+/apple-touch-icon-114x114-precomposed.png
+/apple-touch-icon-72x72-precomposed.png
+/apple-touch-icon-144x144-precomposed.png
+
+NETWORK:
+/api/audio.search
+/api/audio.get
