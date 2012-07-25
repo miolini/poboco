@@ -72,7 +72,6 @@ var player = new Player();
 var search = function(query)
 {
 	query = query.replace(/[\s]+/, ' ').trim().replace(/[^a-z^A-Z^а-я^А-Я^0-9\s]/,'');
-	console.log('query: '+query);
 	$('#search_results').text('');
 	if (query == '')
 	{
@@ -82,6 +81,7 @@ var search = function(query)
 	if (query == lastQuery) return;
 	lastQuery = query;
 	$('#search_box').addClass('loading');
+	$('#search_results').hide();
 	client.request('audio.search', {'q':query}, function(result)
 	{
 		if (result == undefined) return;
@@ -97,6 +97,7 @@ var search = function(query)
 			return;
 		}
 		$('#search_box').removeClass('loading');
+		$('#search_results').show();
 		for(i in result.items)
 		{
 			var item = result.items[i];
