@@ -55,7 +55,7 @@ exports.audioSearch = function(req, res) {
 			var key = item.artist+item.title;
 			key = key.toLowerCase();
 			if (cache[key]) continue;
-			items.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': ''});
+			items.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': id});
 			cache[key] = true;
 		}
 		res.end(JSON.stringify({query:query, items:items}));

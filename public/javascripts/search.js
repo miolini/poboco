@@ -8,7 +8,7 @@ var Client = function()
 			if (callback == undefined) return;
 			try
 			{
-				var result = JSON.parse(response);
+				var result = eval(response);
 				callback(result);
 			} 
 			catch (e) 
@@ -91,7 +91,7 @@ var search = function(query)
 			console.log('error: '+result.error);
 			return;
 		}
-		//if (result.query != lastQuery) return;
+		if (result.query != lastQuery) return;
 		$('#search_results').html('');
 		if (result.items.length == 0)
 		{
