@@ -9,12 +9,12 @@ var Client = function()
 			try
 			{
 				var result = JSON.parse(response);
+				callback(result);
 			} 
 			catch (e) 
 			{
-				console.log(e);
+				console.log('error: '+e);
 			}
-			callback(result);
 		});
 	}
 	return self;
@@ -81,11 +81,10 @@ var search = function(query)
 	if (query == lastQuery) return;
 	lastQuery = query;
 	console.log('searching: '+query);
-	console.log('basta');
 	$('#search_box').addClass('loading');
-	client.request('audio.search', {q: query}, function(result)
+	client.request('audio.search', {'q':'1'}, function(result)
 	{
-		console.log('basta');
+		console.log('basta '+query);
 		if (result == undefined) return;
 		if (result.error)
 		{
@@ -123,13 +122,6 @@ var search = function(query)
 
 $(function()
 {
-	setInterval(function()
-	{
-		$.get('/api/ping', function(response)
-		{
-			alert(response);
-		});
-	}, 2000);
 	//$('#search_box').focus();
 	$('#search_box').keyup(function(e)
 	{

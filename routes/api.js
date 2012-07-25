@@ -13,21 +13,22 @@ var vkClient = new vkclient.VkontakteClient(config.vk_token);
 
 var clean = function(str)
 {
-    str = str.replace(/[^a-z^A-Z^0-9\(\)\s\,\.\:\-\'']/g,' ');
+    str = str.replace(/[^a-z^A-Z^0-9^а-я^А-Я\(\)\s\,\.\:\-\'']/g,' ');
 	str = str.replace(/\s{2,}/, ' ');
 	str = str.replace(/^\s+/,'');
 	str = str.replace(/\s+$/,'');
     return str;
 }
+
 exports.audioSearch = function(req, res) {
+	res.setHeader('Content-Type','application/json');
 	var query = req.param('q');
 	if (query == undefined || query.trim() == '') 
 	{
-		res.end('need q param');
+		res.end(JSON.stringify({'error':'need q param'}));
 		return;
 	}
 	console.log('search audio for query: '+query);
-	res.setHeader('Content-Type', 'text/javascript');
 	vkClient.audioSearch(query, function (result) {
 		if (result.error) {
 			res.end('error');
@@ -54,7 +55,7 @@ exports.audioSearch = function(req, res) {
 			var key = item.artist+item.title;
 			key = key.toLowerCase();
 			if (cache[key]) continue;
-			items.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': id});
+			items.push({'title': item.title, 'artist': item.artist, 'duration': item.duration, 'id': ''});
 			cache[key] = true;
 		}
 		res.end(JSON.stringify({query:query, items:items}));
@@ -96,5 +97,6 @@ exports.audioGet = function(req, res)
 
 exports.ping = function(req, res)
 {
+	res.setHeader('Content-Type','application/json');
 	res.end(JSON.stringify({response:'pong',data: req.param('data')}));
 }
