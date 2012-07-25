@@ -21,6 +21,7 @@ a {
 	width: 100%;
 	left: 0px;
 	height: 4em;
+	border-bottom: 2px solid #2b62b3;
 }
 
 .logo h1 
@@ -28,6 +29,7 @@ a {
 	width: 800px;
 	display: block;
 	margin: 0.4em auto;
+	text-shadow: -1px -2px #2b62b3;
 }
 
 #search_results
