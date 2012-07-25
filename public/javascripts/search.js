@@ -73,6 +73,7 @@ var search = function(query)
 {
 	query = query.replace(/[\s]+/, ' ').trim().replace(/[^a-z^A-Z^а-я^А-Я^0-9\s]/,'');
 	console.log('query: '+query);
+	$('#search_results').text('');
 	if (query == '')
 	{
 		if (lastQuery) $('#search_box').removeClass('loading');
@@ -80,19 +81,16 @@ var search = function(query)
 	}
 	if (query == lastQuery) return;
 	lastQuery = query;
-	console.log('searching: '+query);
 	$('#search_box').addClass('loading');
-	client.request('audio.search', {'q':'1'}, function(result)
+	client.request('audio.search', {'q':query}, function(result)
 	{
-		console.log('basta '+query);
 		if (result == undefined) return;
 		if (result.error)
 		{
 			console.log('error: '+result.error);
 			return;
 		}
-		if (result.query != lastQuery) return;
-		$('#search_results').html('');
+		if (query != lastQuery) return;
 		if (result.items.length == 0)
 		{
 			$('#search_results').text('Nothing found.');
@@ -103,8 +101,13 @@ var search = function(query)
 		{
 			var item = result.items[i];
 			if (item.title == undefined) continue;
-			$('#search_results').append('<span class="item nonselect">');
-			$('#search_results').append('<span class="play" id="bt_'+item.id+'" aid="'+item.id+'"/>'+item.artist+' - '+item.title+'</span>');
+			var mins = Math.floor(item.duration/60);
+			var secs = item.duration - mins*60;
+			if (secs < 10) secs = '0' + secs;
+			var duration = mins+':'+secs;
+			$('#search_results').append('<span class="item nonselect"><span class="play" id="bt_'
+				+item.id+'" aid="'+item.id+'"/>'+item.artist+' - '+item.title+
+				'<span class="duration">'+duration+'</span></span>');
 			$('#bt_'+item.id).click(function()
 			{
 				var aid = $(this).attr('aid');
@@ -125,6 +128,7 @@ $(function()
 	//$('#search_box').focus();
 	$('#search_box').keyup(function(e)
 	{
+		if (e.keyCode == 91) return;
 		var query = $(this).val();
 		search(query);
 	});

@@ -65,31 +65,10 @@ div.block {
 	font-size: 14px;
 }
 
-.play
-{
-	background-image: url('/images/playpause.gif');
-	width: 16px;
-	height: 16px;
-	display: inline-block;
-	cursor: pointer;
-	margin: 1em 0.3em 0 0;
-}
-
 h2 {
 	font-size: 16px;
 	font-weight: normal;
 	padding: 0.2em 0em;
-}
-
-.pause
-{
-	background-image: url('/images/playpause.gif');
-	width: 16px;
-	height: 16px;
-	background-position: 0px 16px;
-	display: inline-block;
-	cursor: pointer;
-	margin: 1em 0.3em 0 0;
 }
 
 #footer {

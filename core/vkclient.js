@@ -33,13 +33,9 @@ var Client = function(authToken)
 
 	self.audioSearch = function(query, callback)
 	{
-		self.request('audio.search', {'q': query, 'sort': 2, 'auto_complete': 0, 'count': 50}, callback);
+		self.request('audio.search', {'q': query, 'sort': 2, 'auto_complete': 0, 'count': 200}, callback);
 	};
-
-	self.audioGet = function(id, url)
-	{
-		
-	};
+	
 	return self;
 };
 

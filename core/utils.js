@@ -5,19 +5,20 @@ var crypto_alg = 'aes-128-cbc';
 
 var crypto_encode = function(pass, text)
 {
-	var iv = new Buffer(md5(text+'ASDFASDF@!#%@#T!GVB$#$!#'),'base64');
-	var cipher = crypto.createCipheriv(crypto_alg, pass, iv);
-	var crypted = cipher.update(text,'utf8','base64');
-	crypted += cipher.final('base64');
-	return iv.toString('base64')+'_'+crypted;
+	//var iv = new Buffer(md5(text+'ASDFASDF@!#%@#T!GVB$#$!#'),'hex');
+	var cipher = crypto.createCipher(crypto_alg, pass);
+	var crypted = cipher.update(text,'utf8','hex');
+	crypted += cipher.final('hex');
+	//return iv.toString('hex')+'_'+crypted;
+	return crypted;
 }
 
 var crypto_decode = function(pass, text)
 {
-	var iv = new Buffer(text.substring(0,24),'base64');
-	var cipher = crypto.createDecipheriv(crypto_alg, pass, iv);
-	text = text.substring(24);
-	var crypted = cipher.update(text,'base64','utf8');
+	//var iv = new Buffer(text.substring(0,32),'hex');
+	var cipher = crypto.createDecipher(crypto_alg, pass);
+	//text = text.substring(32);
+	var crypted = cipher.update(text,'hex','utf8');
 	crypted += cipher.final('utf8');
 	return crypted;
 }
