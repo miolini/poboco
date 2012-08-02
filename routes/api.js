@@ -84,8 +84,8 @@ exports.audioGet = function(req, res)
 			console.log('connected');
 			
 			clientRes.pipe(res);
-			//var fileStream = fs.createWriteStream(fileName);
-			//clientRes.pipe(fileStream);
+			var fileStream = fs.createWriteStream(fileName);
+			clientRes.pipe(fileStream);
 		});
 	});
 	stream.on('open', function()
