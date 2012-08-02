@@ -22,8 +22,51 @@ var Client = function()
 
 var Player = function() {
 	var self = {};
+	self.playlist = [];
 	self.audio = new Audio();
+	
+	self.finish = function(e)
+	{
+		var url = 0;
+	    
+		var callback = function(e)
+		{
+			if (e.stage == 'play')
+				$('#bt_'+e.data.id).attr('class', 'pause');
+			else 
+				$('#bt_'+e.data.id).attr('class', 'play');
+		}
+	    
+		for(i in self.playlist)
+		{
+			var item = self.playlist[i];
+			if (item.url == self.url && self.playlist.length > i + 1)
+			{
+				item = self.playlist[parseInt(i)+1];
+				self.play(item.url, callback, {id:item.id});
+				return;
+			}
+		}
+	    
+		if (self.playlist.length > 0)
+		{
+			var item = self.playlist[0];
+			self.play(item.url, callback, {id:item.id});
+		}
+	}
+	
+	self.audio.addEventListener('ended', self.finish);
 	self.audio.preload = true;
+	
+	self.clearPlaylist = function() 
+	{
+	    self.playlist = [];
+	}
+	
+	self.getPlaylist = function()
+	{
+	    return self.playlist;
+	}
 	
 	self.play = function(url, callback, data) {
 		try 
@@ -98,6 +141,7 @@ var search = function(query)
 		}
 		$('#search_box').removeClass('loading');
 		$('#search_results').show();
+		player.clearPlaylist();
 		for(i in result.items)
 		{
 			var item = result.items[i];
@@ -106,6 +150,8 @@ var search = function(query)
 			var secs = item.duration - mins*60;
 			if (secs < 10) secs = '0' + secs;
 			var duration = mins+':'+secs;
+			item.url = '/api/audio.get?id='+item.id;
+			player.getPlaylist().push(item);
 			$('#search_results').append('<span class="item nonselect"><span class="play" id="bt_'
 				+item.id+'" aid="'+item.id+'"/>'+item.artist+' - '+item.title+
 				'<span class="duration">'+duration+'</span></span>');
